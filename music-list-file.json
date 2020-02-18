@@ -2,16 +2,16 @@
     {
         "title" : "戦争",
         "auther" : "吉田沙良",
-        "src" : "/music-file/song/吉田沙良 - 戦争.mp3"
+        "src" : "https://liuhuiliu.github.io/musicPlayer/music-file/song/吉田沙良 - 戦争.mp3"
     },
     {
         "title" : "Promise",
         "auther" : "山岡晃",
-        "src" : "/music-file/song/山岡晃 - Promise.mp3"
+        "src" : "https://liuhuiliu.github.io/musicPlayer/music-file/song/山岡晃 - Promise.mp3"
     },
     {
         "title" : "The world of spirit",
         "auther" : "土屋昇平",
-        "src" : "/music-file/song/土屋昇平 - The world of spirit.mp3"
+        "src" : "https://liuhuiliu.github.io/musicPlayer//music-file/song/土屋昇平 - The world of spirit.mp3"
     }
 ]
