@@ -156,7 +156,7 @@
 
         function getMusicList(callback) {
             var xhr = new XMLHttpRequest()
-            xhr.open('GET', '/music-list-file.json', true)
+            xhr.open('GET', 'https://liuhuiliu.github.io/musicPlayer/music-list-file.json', true)
             xhr.onload = function () {
                 if (xhr.status >= 200 && 300 || xhr.status === 304) {
                     // console.log(JSON.parse(this.responseText))
