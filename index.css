@@ -1,0 +1,120 @@
+.cover {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: url('bg-pic.jpg') center center no-repeat;
+    background-size: cover;
+    filter: blur(10px);
+}
+.musicbox{
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%,-50%);
+    background-color: rgba(241, 113, 9, 0.24);
+
+}
+.music-panel{
+    border: 1px solid #14b9d6;
+    padding: 20px 20px 5px 20px;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.9) ;
+    background-color: rgba(241, 113, 9, 0.096);
+}
+.musicbox .control {
+    margin-top: 10px;
+    font-size: 22px;
+    color: #ee8a87;
+    float: left;
+}
+.musicbox .control .fa{
+    margin-right: 12px;
+    cursor: pointer;
+}
+.musicbox .control .fa.disable {
+    opacity: 0.3;
+}
+.musicbox .info {
+    margin-left: 120px;
+    width: ：140px;
+    margin-top: px;
+}
+.musicbox .info .title{
+    
+    font-size: 18px;
+    height: 23.16px;
+
+    white-space:nowrap;
+    display: inline-block;
+    animation: 7s wordsLoop linear infinite normal;
+    /* overflow:hidden; */
+    /* text-overflow:ellipsis; */
+    /* overflow: ; */
+}
+.musicbox .info .auther{
+    font-size: 13px;
+}
+
+.musicbox .progress{
+    width: 260px;
+}
+
+.musicbox .progress .bar{
+    height: 3px;
+    margin-top: 5px;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.musicbox .progress .progress-now{
+    background-color: #ee8a87;
+    height: 3px;
+    width:0;
+    position: relative;
+}
+
+.musicbox .time{
+    text-align: right;
+
+}
+
+.musicbox:after,
+.musicbox .music:after{
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.musicbox .list{
+    list-style-type: none;
+}
+
+.musicbox .list>li{
+    position: relative;
+    padding: 5px 10px;
+    border: 1px solid #14b9d6;
+    border-top: none;
+    overflow: hidden;
+    cursor: pointer;
+    
+}
+
+.musicbox .list>li:hover{
+    background-color: rgba(255,255,255,0.4);
+}
+
+.musicbox .list>li.playing:before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 30px;
+    background: rgba(255,255,255,0.8);
+
+}
+.onPlaying {
+    background-color: rgba(241, 113, 9, 0.479);
+}

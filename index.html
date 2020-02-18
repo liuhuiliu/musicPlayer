@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+    <style>
+        div,
+        ul,
+        li,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="cover"></div>
+    <div class="musicbox">
+        <div class="music-panel">
+            <div class="music">
+                <div class="control">
+                    <span class="back"><i class="fa fa-step-backward"></i></span>
+                    <span class="play"><i class="fa fa-play"></i></span>
+                    <span class="forward"><i class="fa fa-step-forward"></i></span>
+                </div>
+                <div class="info">
+                    <div class="title">My song</div>
+                    <div class="auther">ruoyu</div>
+                </div>
+            </div>
+            <div class="progress">
+                <div class="bar">
+                    <div class="progress-total"></div>
+                    <div class="progress-now"></div>
+                </div>
+                <div class="time">0:00</div>
+            </div>
+        </div>
+        <ul class="list">
+            <!-- <li class="">戦争-吉田沙良</li> -->
+        </ul>
+    </div>
+
+
+
+    <script>
+        var currentIndex = 0
+        var musicList = []
+        var audio = new Audio()
+        audio.volume = 0.1
+
+
+
+        // audio.play();//chrome有问题
+
+
+        getMusicList(function (list) {
+            musicList = list
+            loadMusic(list[currentIndex])
+
+            // var song = list[0]
+            // var audioObject = new Audio(song.srcf)
+            // audioObject.play()
+        })
+
+
+
+
+
+        audio.ontimeupdate = function () {
+            // console.log(this.currentTime)
+            $('.musicbox .progress-now').style.width = (this.currentTime / this.duration) * 100 + '%'
+            // var min = Math.floor(this.currentTime / 60) + ''//Math.floor(this.currentTime/60)是数值，非字符串
+            // var sec = Math.floor(this.currentTime) % 60 + ''
+            // console.log(Math.floor(this.currentTime) % 60)
+            // console.log(sec)
+            // console.log(min)
+            // sec = sec.length === 2 ? sec : '0' + sec
+            // $('.musicbox .time').innerText = min + ':' + sec
+        }
+
+        audio.onplay = function () {//控制currenttime的计时间隔
+            clock = setInterval(function () {
+                var min = Math.floor(audio.currentTime / 60) + ''//Math.floor(this.currentTime/60)是数值，非字符串
+                var sec = Math.floor(audio.currentTime) % 60 + ''
+                // console.log(Math.floor(audio.currentTime) % 60)
+                // console.log(sec)
+                // console.log(min)
+                sec = sec.length === 2 ? sec : '0' + sec
+                $('.musicbox .time').innerText = min + ':' + sec
+            }, 1000)
+
+        }
+
+        audio.onpause = function () {
+            clearInterval(clock)
+        }
+
+        $('.musicbox .play').onclick = function () {
+            if (audio.paused) {
+                audio.play()
+                this.querySelector('.fa').classList.remove('fa-pause')
+                this.querySelector('.fa').classList.add('fa-play')
+            } else {
+                audio.pause()
+                this.querySelector('.fa').classList.remove('fa-play')
+                this.querySelector('.fa').classList.add('fa-pause')
+            }
+
+        }
+        audio.onended = function () {
+            currentIndex = (++currentIndex) % musicList.length //理解该逻辑
+            console.log(currentIndex)
+            loadMusic(musicList[currentIndex])
+        }
+
+        $('.musicbox .forward').onclick = function () {
+            currentIndex = (++currentIndex) % musicList.length //理解该逻辑
+            console.log(currentIndex)
+            loadMusic(musicList[currentIndex])
+        }
+        $('.musicbox .back').onclick = function () {
+            currentIndex = (musicList.length + (--currentIndex)) % musicList.length //理解该逻辑
+            console.log(currentIndex)
+            loadMusic(musicList[currentIndex])
+        }
+        $('.musicbox .bar').onclick = function (e) {
+            console.log(e)
+            var percent = e.offsetX / parseInt(getComputedStyle(this).width)
+            console.log(percent)
+            audio.currentTime = audio.duration * percent
+        }
+        $('.list').onclick = function (e) {
+            var a = e.target.index
+            currentIndex = a
+            console.log(currentIndex)
+            loadMusic(musicList[currentIndex])
+
+        }
+
+
+        function $(selector) {
+            return document.querySelector(selector);
+        }
+
+        function $$(selector) {
+            return document.querySelectorAll(selector);
+        }
+
+
+
+
+
+        function getMusicList(callback) {
+            var xhr = new XMLHttpRequest()
+            xhr.open('GET', '/music-list-file.json', true)
+            xhr.onload = function () {
+                if (xhr.status >= 200 && 300 || xhr.status === 304) {
+                    // console.log(JSON.parse(this.responseText))
+                    console.log('sucess')
+                    console.log(JSON.parse(this.responseText))
+                    console.log(JSON.parse(this.responseText).length)
+                    // var listLength = JSON.parse(this.responseText).length
+                    creatList(JSON.parse(this.responseText))
+                    callback(JSON.parse(this.responseText))
+                } else {
+                    console.log('error')
+                }
+            }
+            xhr.onerror = function () {
+                console.log('网络异常')
+            }
+            xhr.send();
+            console.log(window.musiclist)
+        }
+
+        function loadMusic(musicObj) {
+            console.log('begin play', musicObj)
+            $('.musicbox .title').innerText = musicObj.title
+            $('.musicbox .auther').innerText = musicObj.auther
+            // $('.cover').style.backgroundImage = 'url('+musicObj.img+')'
+            audio.src = musicObj.src
+            audio.play()
+            blingList()
+        }
+        function creatList(obj) {
+            console.log(obj.length)
+            // var ce = document.createElement('li')
+            for (var i = 0; i < obj.length; i++) {
+                var li = document.createElement('li')
+                li.index = i
+                li.classList.add('.musicL')
+                var ul = $('.list')
+                li.innerText = obj[i].title
+                ul.appendChild(li)
+            }//(i + 1 + '.') / + (i + 1)
+        }
+        function blingList() {
+            for(var i = 0; i < musicList.length; i++){
+                $$('li')[i].classList.remove('onPlaying')
+            }
+            console.log(currentIndex)
+            var b = currentIndex
+            var a = $$('li')[b].classList
+            a.add('onPlaying')
+            console.log(a)
+
+        }
+        
+
+
+
+
+
+    </script>
+</body>
+
+</html>
